@@ -1,0 +1,11 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
+test('public quote and enquiry render with a logo before any staff workspace is loaded',async()=>{
+ const source=fs.readFileSync(new URL('../public/app.js',import.meta.url),'utf8').split('\n').filter(l=>!l.startsWith('import ')&&!l.startsWith("if(location.pathname.startsWith('/q/'))")).join('\n');
+ const quote={number:1002,status:'Accepted',currency:'HKD',tax:0,items:[],messages:[],title:'Logo regression',created:'2026-10-15',expires:'2026-11-15',terms:'',notes:''};
+ const app={},controls=new Map();const element=s=>{if(s==='#app')return app;if(s==='#accept-form'||s==='#customer-review-form'||s==='#decline-quote')return null;if(!controls.has(s))controls.set(s,{querySelectorAll:()=>[]});return controls.get(s)};
+ const location={pathname:'/q/public-token',search:'',origin:'https://quotation.example.com'},document={querySelector:element,querySelectorAll:()=>[],visibilityState:'visible',addEventListener(){}};
+ const context=vm.createContext({location,document,URLSearchParams,Intl,console,localStorage:{getItem(){return null}},setInterval(){},clearInterval(){},configureTurnstile(){},submissionAction(){return null},crypto:{randomUUID(){return 'viewer-test'}},fetch:async()=>({ok:true,status:200,json:async()=>({quote,settings:{company:'Dayella Limited',currency:'HKD',logoId:'logo'},reviews:[]})})});
+ vm.runInContext(source,context);await vm.runInContext('renderShared()',context);assert.doesNotMatch(app.innerHTML,/Quote unavailable|Cannot read/);assert.match(app.innerHTML,/src="\/api\/shared\/public-token\/logo"/);assert.match(app.innerHTML,/Your quote is accepted/);
+ location.search='?preview=1';await vm.runInContext('renderShared()',context);assert.match(app.innerHTML,/Customer preview/);assert.match(app.innerHTML,/src="\/api\/preview\/public-token\/logo"/);assert.doesNotMatch(app.innerHTML,/Quote unavailable|Cannot read/);
+ location.search='';location.pathname='/lead';context.fetch=async()=>({ok:true,status:200,json:async()=>({company:'Dayella Limited',logoId:'logo'})});await vm.runInContext('renderLeadForm()',context);assert.match(app.innerHTML,/src="\/branding\/logo"/);assert.doesNotMatch(app.innerHTML,/Enquiry form unavailable/);
+});

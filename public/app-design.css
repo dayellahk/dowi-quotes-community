@@ -1,0 +1,204 @@
+/* Shared staff workspace. Customer quotations and printed documents retain their own branding. */
+.mac-app { --ink:#28313f; --muted:#778291; --line:#e5e9ef; --green:#007aff; --cream:#f5f6f9; }
+.mac-app .mac-sidebar { overflow-y:auto; scrollbar-width:thin; }
+.mac-app .mac-brand { flex-shrink:0; }
+.mac-app .mac-global-search { display:flex; align-items:center; gap:8px; width:245px; min-width:90px; margin-left:auto; padding:7px 10px; border:1px solid #e0e5ed; border-radius:8px; background:#fff9; }
+.mac-global-search svg { width:15px; height:15px; color:#8592a3; }
+.mac-app .mac-global-search input { width:100%; min-width:0; padding:0; margin:0; background:transparent; border:0; border-radius:3px; font-size:12px; box-shadow:none; }
+.mac-app .mac-toolbar-actions { flex-shrink:0; }
+.mac-app .mac-account.selected { color:#007aff!important; }
+.mac-app .page-heading { display:flex; align-items:center; justify-content:space-between; gap:24px; margin:0 0 30px; }
+.mac-app .page-heading h1 { margin:0 0 7px; }
+.mac-app .page-heading p { font-size:12px; color:#778291; line-height:1.65; max-width:530px; }
+.mac-page-glyph { display:grid; place-items:center; width:53px; height:53px; flex-shrink:0; border-radius:15px; color:#fff; background:linear-gradient(145deg,#64acff,#0875ef); box-shadow:inset 0 1px 0 #ffffff70,0 5px 15px #007aff1a; }
+.mac-page-glyph svg { width:26px; height:26px; }
+.mac-app .button { display:inline-flex; align-items:center; justify-content:center; gap:7px; border-radius:8px; min-height:36px; padding:8px 14px; font-size:12px; font-weight:550; letter-spacing:0; line-height:1.4; white-space:normal; }
+.mac-app .button svg { width:16px; height:16px; }
+.mac-app .button.primary { background:linear-gradient(#188aff,#0077ed); color:white; border:1px solid #006ce820; box-shadow:inset 0 1px 0 #ffffff28,0 2px 4px #007aff12; }
+.mac-app .button.secondary { color:#536277; border:1px solid #dce2ea; background:white; box-shadow:0 1px 3px #1a345907; }
+.mac-app button:disabled { opacity:.45; cursor:default; }
+.mac-app .text-button { color:#1678dc; font-size:12px; line-height:1.5; }
+.mac-app .button:hover:not(:disabled) { filter:brightness(.97); transform:none; }
+.mac-app .panel { border:1px solid #e3e7ee; border-radius:15px; background:#fff; box-shadow:0 3px 15px #243d6103; overflow:hidden; }
+.mac-app .panel-heading { padding:21px 23px; border-bottom:1px solid #edf0f4; align-items:center; }
+.mac-app .panel-heading h2 { margin:0; font-size:14px; }
+.mac-app .subtle { color:#7a8595; font-size:12px; line-height:1.65; }
+.mac-app .empty { grid-column:1/-1; padding:60px 24px; text-align:center; color:#7f8b9c; background:#ffffff80; border:1px dashed #dce3ed; border-radius:14px; font-size:13px; }
+.mac-app .panel .empty { margin:15px; border:0; background:#f8faff; }
+/* Overview: grouped work on the left, a compact reporting card on the right. */
+.mac-app .reference-dashboard { grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr); gap:26px; align-items:start; }
+.mac-app .dashboard-tabs { display:flex; width:fit-content; gap:3px; border:1px solid #e2e7ee; border-radius:9px; padding:4px; background:#e9edf3; }
+.mac-app .dashboard-tabs button { margin:0; border:1px solid transparent; padding:7px 19px; font-size:12px; color:#788496; border-radius:6px; }
+.mac-app .dashboard-tabs button.selected { background:white; color:#2b3e56; border-color:#e1e5ec; box-shadow:0 1px 3px #18335410; }
+.mac-app .questions-summary { padding:16px 2px 0; }
+.mac-app .questions-summary button { font-size:11px; }
+.mac-app .quote-group { margin-top:24px; border:1px solid #e3e7ef; border-radius:13px; background:#fff; overflow:hidden; box-shadow:0 2px 7px #29456c02; }
+.mac-app .quote-group header { margin:0; padding:15px 18px; gap:12px; background:#fbfcfe; }
+.mac-app .quote-group header h2 { font-size:13px; color:#3d4a5e; font-weight:650; }
+.mac-app .quote-group header .text-button { margin-left:auto; font-size:11px; color:#7d8ba0; }
+.mac-app .quote-group header>span { margin-left:0; display:grid; place-items:center; min-width:22px; height:22px; padding-inline:5px; border-radius:7px; color:#7b8ca0; background:#edf2f8; font-size:10px; }
+.mac-app .reference-quote-row { padding:17px 18px; border-color:#eef1f5; gap:16px; color:#304057; }
+.mac-app .reference-quote-row:hover { background:#f5f9ff; }
+.mac-app .reference-quote-row>div:first-child { padding-left:0; border:0; }
+.mac-app .reference-quote-row strong { font-size:12px; font-weight:550; }
+.mac-app .reference-quote-row small { font-size:10px; color:#8290a3; line-height:1.7; }
+.mac-app .reference-quote-row em { color:#5f94c5; }
+.mac-app .group-empty { padding:23px 18px; border-top:1px solid #eef1f5; color:#9aa4b2; font-size:12px; }
+.mac-app .reference-analytics { margin:0; padding:24px; border:1px solid #e3e7ef; border-radius:15px; background:#fff; }
+.mac-app .reference-analytics>h2 { font-size:16px; margin-bottom:5px; }
+.mac-app .reference-analytics>.subtle { font-size:10px; }
+.mac-app .reference-stat-overview { justify-content:space-between; padding:25px 0; }
+.mac-app .reference-stat-overview>div:first-child { text-align:left; }
+.mac-app .reference-stat-overview strong { font-size:36px; font-weight:650; color:#007aff; line-height:1.2; }
+.mac-app .reference-stat-overview p { font-size:11px; color:#6f8096; margin:5px 0 18px; }
+.mac-app .reference-stat-overview>div:first-child>span { font-size:23px; font-weight:550; color:#52657c; }
+.mac-app .reference-stat-overview small { font-size:10px; color:#8795a7; }
+.mac-app .donut { width:118px; height:118px; background:conic-gradient(#4a9bff var(--rate),#edf2f8 0); }
+.mac-app .donut::after { background:#fff; }
+.mac-app .donut span { color:#45688d; font-size:24px; font-weight:550; }
+.mac-app .pipeline-total { padding:20px 0; gap:15px; border-color:#e9edf3; }
+.mac-app .pipeline-total label { color:#8491a3; font-size:10px; }
+.mac-app .pipeline-total strong { font-size:20px; font-weight:600; color:#374a64; overflow-wrap:anywhere; }
+.mac-app .chart-heading { margin-top:22px; font-size:11px; color:#7b8ca3; }
+.mac-app svg.quote-trend { width:100%; height:auto; margin:12px 0 20px; }
+.mac-app .reference-analytics .activity { border:1px solid #e8edf4; border-radius:12px; }
+.mac-app .reference-analytics .panel-heading { padding:16px; }
+.mac-app .activity-row { padding:15px 16px; border-color:#eef1f5; }
+.mac-app .activity-row strong { font-size:11px; line-height:1.5; }
+.mac-app .activity-row small { font-size:10px; }
+.mac-app .activity-symbol { background:#edf5ff; color:#67a1d8; border-radius:9px; }
+.mac-app .followup { margin-top:20px; border:1px solid #e1eaf7; border-radius:12px; padding:19px; background:linear-gradient(135deg,#f0f6ff,#f7f9fd); }
+.mac-app .followup h2 { font-size:14px; }
+.mac-app .followup p { color:#74849a; font-size:11px; line-height:1.8; margin:9px 0 15px; }
+/* Quotations, filters and status. */
+.mac-app .tabs { display:flex; gap:3px; padding:13px 16px; background:#fbfcfe; border-bottom:1px solid #edf0f5; overflow-x:auto; }
+.mac-app .tabs button { padding:8px 12px; margin:0; border:1px solid transparent; border-radius:7px; color:#7c899c; font-size:11px; font-weight:550; white-space:nowrap; }
+.mac-app .tabs button.selected { background:#eaf3ff; color:#0b77e4; border-color:#dfecfb; }
+.mac-app .tabs button span { background:#dcecff; color:#548bc2; padding:2px 5px; border-radius:5px; }
+.mac-app .toolbar { padding:19px 20px; gap:12px; border-color:#edf0f5; }
+.mac-app .quote-list-toolbar { display:grid; grid-template-columns:minmax(170px,1fr) minmax(130px,.8fr) minmax(150px,1fr); align-items:end; }
+.mac-app .quote-list-toolbar>label:not(.search) { margin:0; display:flex; flex-direction:column; gap:6px; font-size:10px; color:#8b96a6; }
+.mac-app .quote-list-toolbar select { margin:0; width:100%; min-width:0; font-size:11px; padding:9px 10px; border-radius:8px; border:1px solid #e1e6ee; background:#f9fafc; color:#5a6c84; }
+.mac-app .quote-list-toolbar>#sort { grid-column:2; }
+.mac-app .quote-list-toolbar>.button { justify-self:end; min-height:34px; font-size:11px; }
+.mac-app .search { min-width:0; border:1px solid #e1e6ee; border-radius:8px; padding:9px 10px; background:#f9fafc; margin:0; }
+.mac-app .search input { font-size:12px; min-width:0; margin:0; }
+.mac-app table { width:100%; min-width:660px; border-collapse:collapse; }
+.mac-app th { padding:12px 20px; background:#f9fafc; color:#8b97a9; font-size:9px; font-weight:600; letter-spacing:.055em; border-block:1px solid #edf0f5; }
+.mac-app td { padding:20px; border-bottom:1px solid #edf0f5; font-size:12px; }
+.mac-app tr[data-open]:hover { background:#f6faff; }
+.mac-app .quote-cell { gap:13px; }
+.mac-app .quote-icon { display:grid; place-items:center; width:34px; height:38px; border-radius:9px; background:#f0f5fc; color:#87a3c8; flex-shrink:0; }
+.mac-app .quote-icon svg { width:20px; height:20px; }
+.mac-app .quote-cell strong { color:#37485f; font-size:12px; font-weight:550; }
+.mac-app .quote-cell small { color:#8a98aa; font-size:10px; margin-top:5px; }
+.mac-app .amount { color:#3c506a; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.mac-app .table-date { color:#8c9aae; font-size:10px; white-space:nowrap; }
+.mac-app .row-arrow { color:#9cb2ce; }
+.mac-app .badge { display:inline-flex; align-items:center; border-radius:6px; padding:4px 8px; font-size:10px; font-weight:550; white-space:nowrap; border:1px solid #00000003; }
+.mac-app .badge.draft { color:#81899a; background:#f0f2f7; }
+.mac-app .badge.sent { color:#498ad4; background:#edf5ff; }
+.mac-app .badge.viewed { color:#b68c45; background:#fff7e9; }
+.mac-app .badge.accepted,.mac-app .badge.completed { color:#548d75; background:#edf7f1; }
+.mac-app .badge.declined,.mac-app .badge.expired,.mac-app .badge.withdrawn { color:#b57979; background:#fff0ef; }
+.mac-app .table-footer { padding:15px 20px; color:#9aa5b5; font-size:10px; }
+/* Customers, reusable content and enquiries. */
+.mac-app .card-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.mac-app .contact-card { padding:23px; min-width:0; }
+.mac-app .contact-avatar { width:43px; height:43px; border-radius:13px; color:#47658b; font-size:13px; border:1px solid #00000005; }
+.mac-app .contact-card h2 { font-size:15px; margin:17px 0 5px; }
+.mac-app .contact-card p,.mac-app .library-card p { font-size:12px; color:#8a96a7; line-height:1.7; }
+.mac-app .contact-card a { display:block; font-size:11px; color:#6f91b9; margin-top:10px; overflow-wrap:anywhere; }
+.mac-app .card-bottom { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:22px; padding-top:16px; border-top:1px solid #edf0f5; color:#8e9bae; font-size:10px; }
+.mac-app .card-bottom .text-button { font-size:11px; }
+.mac-app .card-bottom>span { margin-right:auto; }
+.mac-app .template-visual { height:145px; background:radial-gradient(ellipse at top left,#e9f2ff,transparent 75%),linear-gradient(135deg,#f5f8ff,#edf0f8); }
+.mac-app .item-visual { background:radial-gradient(ellipse at top left,#e9f6f3,transparent 75%),linear-gradient(135deg,#f6fbfa,#eaf1f5); }
+.mac-app .mini-document { border-color:#e0e8f4; border-radius:5px; box-shadow:0 9px 20px #486a8e12; }
+.mac-app .mini-document span { color:#9cb7da; }
+.mac-app .template-spark { color:#becfe7; }
+.mac-app .library-content { padding:22px; }
+.mac-app .library-content h2 { font-size:15px; margin-bottom:8px; }
+.mac-app .lead-row { padding:23px; border-color:#edf0f5; }
+.mac-app .lead-row h3 { color:#40536e; margin-top:0; }
+.mac-app .lead-row p { color:#7e8fa6; font-size:12px; }
+.mac-app .lead-row select { padding:8px; border:1px solid #e2e7ef; border-radius:7px; background:#f8faff; }
+.mac-app .review-card { padding:24px; }
+.mac-app .review-stars { color:#d1ae68; letter-spacing:3px; }
+.mac-app .review-card>p { color:#76879d; font-size:13px; }
+/* Editing sheets and integration dialogs use the same controls. */
+.mac-app #modal { padding:32px; max-width:calc(100vw - 32px); max-height:calc(100dvh - 48px); }
+.mac-app #modal.wide { width:1000px; }
+.mac-app #modal .modal-close { display:grid; place-items:center; width:29px; height:29px; padding:0; border-radius:50%; background:#eaf0f6; color:#8291a4; font-size:21px; top:15px; right:15px; }
+.mac-app #modal .editor-heading { margin:5px 28px 24px 0; }
+.mac-app #modal :is(h2,h3) { margin-top:0; }
+.mac-app #modal label { color:#748298; font-size:11px; font-weight:500; letter-spacing:0; }
+.mac-app #modal :is(input,select,textarea):not([type=checkbox]):not([type=radio]) { border:1px solid #dde4ee; border-radius:8px; padding:10px 11px; color:#40516a; background:white; font-family:inherit; font-size:13px; }
+.mac-app #modal :is(input,textarea)::placeholder { color:#a9b2c0; }
+.mac-app #modal input[type=checkbox] { accent-color:#007aff; }
+.mac-app #modal .edit-item { padding:18px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; gap:14px; }
+.mac-app #modal .edit-item input { min-width:0; width:100%; }
+.mac-app #modal .internal-line-summary { border-radius:8px; color:#8394a8; background:#f4f8fd; padding:11px; font-size:11px; }
+.mac-app #modal .editor-total { padding:20px 0; color:#3f5a7d; }
+.mac-app #modal .form-footer { gap:12px; padding-top:22px; border-top:1px solid #e4e9f1; }
+.mac-app #modal .quote-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding-right:20px; }
+.mac-app #modal .detail-extra { border-top:1px solid #e1e7f0; padding-top:25px; }
+.mac-app #modal .detail-extra :is(.panel,.message,.internal-summary) { border-radius:12px; border-color:#e3eaf4; }
+.mac-app #modal .quote-document { color:#273b32; background:#fff; }
+/* Fit narrow screens without hiding search, filters or row actions. */
+@media(max-width:1200px) {
+ .mac-app .mac-global-search { width:185px; }.mac-app .mac-toolbar { gap:15px; }.mac-app .mac-toolbar-actions { gap:13px; }
+ .mac-app .reference-dashboard { grid-template-columns:minmax(0,1.2fr) minmax(270px,1fr); gap:20px; }.mac-app .reference-analytics { padding:20px; }
+ .mac-app .card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.mac-app .pipeline-total strong { font-size:17px; }
+}
+@media(max-width:1000px) {
+ .mac-app .mac-global-search { width:170px; }.mac-app .mac-breadcrumb>span,.mac-app .mac-breadcrumb>svg { display:none; }
+ .mac-app .reference-dashboard { grid-template-columns:1fr; }.mac-app .reference-analytics { padding:24px; }
+ .mac-app .reference-stat-overview { justify-content:flex-start; gap:65px; }.mac-app svg.quote-trend { max-height:240px; }
+ .mac-app .page-heading { align-items:flex-start; }.mac-app .quote-list-toolbar { grid-template-columns:1fr 1fr; }.mac-app .quote-list-toolbar>.search { grid-column:1/-1; }.mac-app .quote-list-toolbar>#sort { grid-column:1; }
+}
+@media(max-width:760px) {
+ .mac-app .mac-global-search { display:none; }.mac-app .mac-toolbar-actions { margin-left:auto; }
+ .mac-app .page-heading { flex-wrap:wrap; gap:18px; margin-bottom:24px; }.mac-app .page-heading>.button { margin-left:auto; }
+ .mac-page-glyph { width:45px; height:45px; border-radius:13px; }.mac-page-glyph svg { width:24px; height:24px; }
+ .mac-app .page-heading p { font-size:11px; }.mac-app .card-grid { grid-template-columns:1fr; }
+ .mac-app .quote-list-toolbar { padding:17px; gap:12px; }.mac-app .tabs { padding:10px; }
+ .mac-app .table-footer { padding:13px 16px; gap:12px; flex-wrap:wrap; }.mac-app .table-footer span { font-size:9px; }
+ .mac-app .table-wrap table { min-width:0; }.mac-app .table-wrap thead { display:none; }.mac-app .table-wrap tbody { display:block; }
+ .mac-app tr[data-open] { display:grid; grid-template-columns:1fr auto; padding:17px; border-bottom:1px solid #edf0f5; gap:13px 8px; }
+ .mac-app tr[data-open] td { border:0; padding:0; display:block; }
+ .mac-app tr[data-open] td:first-child { grid-column:1/-1; }.mac-app .quote-cell strong { white-space:normal; font-size:12px; }
+ .mac-app .quote-cell small { white-space:normal; }.mac-app .quote-cell { align-items:flex-start; }.mac-app .quote-cell>div { min-width:0; }
+ .mac-app tr[data-open] .amount { text-align:right; }.mac-app tr[data-open] .table-date { grid-column:1; font-size:10px; }.mac-app tr[data-open] .row-arrow { text-align:right; font-size:13px; }
+ .mac-app #modal { padding:26px 20px; max-width:calc(100vw - 16px); max-height:calc(100dvh - 24px); border-radius:16px; }
+ .mac-app #modal .form-grid { grid-template-columns:1fr; }.mac-app #modal .edit-item { grid-template-columns:repeat(2,minmax(0,1fr)); padding:14px; }
+ .mac-app #modal .form-footer { flex-wrap:wrap; }.mac-app .reference-quote-row { flex-wrap:wrap; padding:16px; }
+ .mac-app .reference-quote-row>div:first-child { width:100%; }.mac-app .reference-quote-row>div:last-child { width:100%; display:flex; justify-content:space-between; text-align:left; }
+ .mac-app .reference-quote-row small { margin-top:3px; }.mac-app .reference-quote-row strong { white-space:normal; }
+}
+@media(max-width:520px) {
+ .mac-app .mac-toolbar { gap:8px; }.mac-app .reference-analytics { padding:18px; }.mac-app .reference-stat-overview { gap:24px; justify-content:space-between; }
+ .mac-app .donut { width:95px; height:95px; }.mac-app .donut span { font-size:20px; }.mac-app .pipeline-total strong { font-size:17px; }
+ .mac-app .quote-list-toolbar { grid-template-columns:minmax(0,1fr); }.mac-app .quote-list-toolbar :is(.search,#sort) { grid-column:1; }.mac-app .quote-list-toolbar>.button { justify-self:stretch; }
+ .mac-app .contact-card { padding:21px; }.mac-app .card-bottom { gap:12px; }.mac-app .dashboard-tabs button { padding-inline:16px; }
+ .mac-app .mac-footer { flex-wrap:wrap; }.mac-app #modal .item-options { gap:12px; }
+}
+@media print {
+ .mac-app .mac-workspace,.mac-app #toast { display:none!important; }
+ .mac-app #modal { border:0; border-radius:0; padding:0; max-width:none; max-height:none; box-shadow:none; background:white; }
+}
+/* The product mark is an original vector asset, shared by navigation and sign-in. */
+.mac-app .mac-brand-mark { padding:0; background:none; box-shadow:0 3px 8px #315bb51c; letter-spacing:0; }
+.mac-brand-mark img { display:block; width:100%; height:100%; }
+.mac-app .button>span { font-size:inherit; }
+.mac-app .search input { border:0; border-radius:0; padding:0; background:transparent; box-shadow:none; }
+.mac-mobile-account { display:none; }
+@media(max-width:760px) {
+ .mac-mobile-account { display:grid; place-items:center; width:46px; min-height:43px; margin-top:10px; border:1px solid transparent; border-radius:9px; color:#7c8695!important; }
+ .mac-mobile-account.selected { background:#fff9; border-color:#fffe; color:#0074e8!important; }.mac-mobile-account svg { width:20px; height:20px; }
+}
+@media(max-width:520px) { .mac-mobile-account { width:42px; } }
+.mac-app .search { display:flex; align-items:center; gap:8px; }
+.mac-app .search>span { position:static; flex-shrink:0; font-size:19px; line-height:1; color:#8c9aad; }
+.mac-app .search input { flex:1; width:100%; }
+.mac-app .quote-cell small { display:block; }

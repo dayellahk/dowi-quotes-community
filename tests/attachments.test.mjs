@@ -1,0 +1,32 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {once} from 'node:events';
+import {mkdtempSync,rmSync,readdirSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+test('attachments persist, require quote access, and support public company branding',async()=>{
+ const dir=mkdtempSync(path.join(tmpdir(),'dowi-quotes-assets-'));let server;
+ const request=async(url,method='GET',body,staff=true)=>{const response=await fetch('http://127.0.0.1:3106'+url,{method,headers:{'Content-Type':'application/json',...(staff?{Authorization:'Basic '+Buffer.from('admin:attachment-test').toString('base64')}:{})},body:body?JSON.stringify(body):undefined});return {status:response.status,headers:response.headers,data:response.headers.get('content-type')?.includes('json')?await response.json():Buffer.from(await response.arrayBuffer())}};
+ const start=async()=>{server=spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:'3106',DATA_DIR:dir,INTERNAL_PASSWORD:'attachment-test'},stdio:['ignore','pipe','pipe']});await Promise.race([once(server.stdout,'data'),once(server,'exit').then(()=>{throw Error('Server failed')})])};
+ const stop=async()=>{const done=once(server,'exit');server.kill();await done};
+ try{await start();const db=(await request('/api/workspace')).data;
+  assert.equal((await request('/api/assets','POST',{name:'x.pdf',base64:'bad base64!'})).status,400);
+  const pdf=Buffer.from('%PDF-1.4\nQuote attachment QA\n%%EOF\n');const asset=(await request('/api/assets','POST',{name:'scope-of-work.pdf',base64:pdf.toString('base64')})).data;assert.equal(asset.type,'application/pdf');assert.equal(asset.size,pdf.length);
+  assert.equal((await request('/api/assets/'+asset.id,'GET',null,false)).status,401);
+  const q=(await request('/api/quotes','POST',{title:'Attached proposal',contactId:db.contacts[0].id,tax:0,expires:new Date(Date.now()+86400000).toISOString(),items:[{name:'Service',price:100,cost:50,qty:1}],attachments:[asset]})).data;
+  assert.equal((await request(`/api/shared/${q.token}/attachments/${asset.id}`,'GET',null,false)).status,404);
+  assert.equal((await request(`/api/preview/${q.token}`,'GET',null,false)).status,401);const preview=(await request(`/api/preview/${q.token}`)).data;assert.equal(preview.quote.status,'Draft');assert.equal(preview.quote.items[0].cost,undefined);assert.equal((await request('/api/workspace')).data.quotes.find(x=>x.id===q.id).views,0);
+  await request(`/api/quotes/${q.id}/status`,'POST',{status:'Sent'});
+  const download=await request(`/api/shared/${q.token}/attachments/${asset.id}`,'GET',null,false);assert.equal(download.status,200);assert.deepEqual(download.data,pdf);assert.match(download.headers.get('content-disposition'),/^attachment;/);
+  const unrelated=(await request('/api/assets','POST',{name:'internal.txt',base64:Buffer.from('Private working document').toString('base64')})).data;assert.equal((await request(`/api/shared/${q.token}/attachments/${unrelated.id}`,'GET',null,false)).status,404);
+  const publicQ=(await request(`/api/shared/${q.token}`,'GET',null,false)).data.quote;assert.equal(publicQ.attachments[0].name,'scope-of-work.pdf');assert.equal(publicQ.attachments[0].sha256,undefined);assert.equal(publicQ.items[0].cost,undefined);
+  assert.equal((await request('/api/settings','PUT',{...db.settings,logoId:asset.id})).status,400,'PDF cannot become a logo');
+  const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a4RUAAAAASUVORK5CYII=','base64');const logo=(await request('/api/assets','POST',{name:'company.png',base64:png.toString('base64')})).data;assert.equal(logo.type,'image/png');await request('/api/settings','PUT',{...db.settings,logoId:logo.id});const branding=await request('/branding/logo','GET',null,false);assert.equal(branding.status,200);assert.deepEqual(branding.data,png);assert.match(branding.headers.get('content-disposition'),/^inline;/);
+  assert.deepEqual((await request(`/api/shared/${q.token}/logo`,'GET',null,false)).data,png);assert.deepEqual((await request(`/api/preview/${q.token}/logo`)).data,png);assert.deepEqual((await request(`/api/preview/${q.token}/logo`,'GET',null,false)).data,png);assert.equal((await request('/api/shared/not-a-token/logo','GET',null,false)).status,404);
+  const beforePreview=(await request('/api/workspace')).data.quotes.find(x=>x.id===q.id).views;const anonPreview=await request(`/api/preview/${q.token}`,'GET',null,false);assert.equal(anonPreview.status,200);assert.equal(anonPreview.data.quote.items[0].cost,undefined);assert.equal((await request('/api/workspace')).data.quotes.find(x=>x.id===q.id).views,beforePreview);assert.equal((await request(`/api/preview/${q.token}/accept`,'POST',{agreed:true},false)).status,401);
+  await stop();await start();assert.deepEqual((await request(`/api/shared/${q.token}/attachments/${asset.id}`,'GET',null,false)).data,pdf);assert.equal(readdirSync(path.join(dir,'files')).length,3);
+  await request(`/api/quotes/${q.id}/status`,'POST',{status:'Withdrawn'});assert.equal((await request(`/api/shared/${q.token}/attachments/${asset.id}`,'GET',null,false)).status,404);assert.equal((await request(`/api/shared/${q.token}/logo`,'GET',null,false)).status,404);
+  assert.equal((await request(`/api/preview/${q.token}`,'GET',null,false)).status,401);assert.equal((await request(`/api/preview/${q.token}/logo`,'GET',null,false)).status,401);
+ }finally{if(server&&server.exitCode===null)await stop();rmSync(dir,{recursive:true,force:true})}
+});

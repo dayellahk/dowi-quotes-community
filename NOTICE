@@ -1,0 +1,9 @@
+Dowi Quotes Community (self-hosted Web and backend)
+Copyright (c) 2026 Dayella Limited.
+
+The source code in this repository is licensed under GNU AGPL version 3 only.
+The official Dowi Quotes iOS application and the hosted subscription/licensing
+service are separate proprietary products and are not included in this repository.
+Third-party packages retain their respective licenses; see package-lock.json and
+THIRD_PARTY_NOTICES.md. Nothing here grants trademark rights to represent a fork
+as an official Dowi product. This notice does not add restrictions to AGPL rights.

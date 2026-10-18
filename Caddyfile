@@ -1,0 +1,8 @@
+{$SITE_HOST} {
+    encode zstd gzip
+    reverse_proxy quotes:3000
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer
+    }
+}

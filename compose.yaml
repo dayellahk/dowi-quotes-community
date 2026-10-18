@@ -1,0 +1,30 @@
+services:
+  quotes:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - quotes-data:/app/data
+    expose:
+      - "3000"
+    security_opt:
+      - no-new-privileges:true
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      SITE_HOST: ${SITE_HOST:?Run setup first}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      quotes:
+        condition: service_healthy
+volumes:
+  quotes-data:
+  caddy-data:
+  caddy-config:

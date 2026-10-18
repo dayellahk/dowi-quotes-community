@@ -1,0 +1,26 @@
+{
+  "name": "dowi-quotes-community",
+  "version": "0.1.2",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env server.mjs",
+    "dev": "node --env-file=.env --watch server.mjs",
+    "test": "node --test",
+    "setup": "node scripts/setup.mjs",
+    "setup:local": "node scripts/setup.mjs --local",
+    "check:release": "python3 scripts/release.py --check",
+    "test:release": "python3 -m unittest discover -s tests -p \"release_test.py\"",
+    "package:release": "python3 scripts/release.py --output dist"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1150.0",
+    "@aws-sdk/s3-request-presigner": "^3.1150.0",
+    "jose": "^6.2.12",
+    "nodemailer": "^10.0.16"
+  },
+  "license": "AGPL-3.0-only",
+  "description": "Self-hosted quotations, customer acceptance and open tracking."
+}

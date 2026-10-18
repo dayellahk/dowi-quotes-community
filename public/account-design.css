@@ -1,0 +1,72 @@
+/* Account and sign-in share the workspace's system typography and surfaces. */
+body.mac-auth:not(.mac-app) { margin:0; background:radial-gradient(ellipse at 10% 5%,#e4efff,transparent 50%),radial-gradient(ellipse at 90% 95%,#eeeafa,transparent 55%),#f5f6f9; color:#29394f; font:14px/1.6 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; }
+.account { max-width:580px; margin:9vh auto; padding:38px; border:1px solid #fff; border-radius:24px; background:#ffffffd9; box-shadow:0 14px 55px #25436d0b; }
+.account .brand { display:flex; align-items:center; gap:12px; margin:0 0 30px; color:#2f3d52; font-size:20px; font-weight:650; letter-spacing:-.5px; }
+.account .brand img { border-radius:13px; box-shadow:0 3px 9px #2463be19; }
+.account .brand small { display:block; margin-top:1px; font-size:11px; color:#8b97a7; font-weight:450; letter-spacing:0; }
+.account #language { margin-bottom:20px; }
+.account h1 { font-family:inherit; font-size:31px; letter-spacing:-.8px; color:#27374d; line-height:1.2; margin:0 0 12px; }
+.account #intro { color:#8090a6; font-size:13px; margin:0 0 28px; overflow-wrap:anywhere; }
+.account :is(input,select,textarea) { box-sizing:border-box; width:100%; margin:8px 0; padding:11px 12px; font:inherit; font-size:13px; color:#415570; border:1px solid #dee5ef; border-radius:8px; background:#fafbfd; }
+.account input[type=checkbox] { width:auto; accent-color:#007aff; }
+.account button { margin:8px 0; padding:11px 14px; font:inherit; font-size:13px; border:1px solid #dce4ef; border-radius:8px; width:100%; color:#527195; background:#f8fbff; cursor:pointer; }
+.account .button.primary { background:linear-gradient(#1789ff,#0077ef); color:white; border-color:#0075e5; box-shadow:0 2px 5px #007aff15; }
+.account .button.secondary { color:#46658c; background:#fff; border:1px solid #dce4ef; }
+.account a { color:#007aff; }
+.account #status { white-space:pre-wrap; overflow-wrap:anywhere; color:#aa6d33; font-size:12px; }
+.account #status:not(:empty) { border:1px solid #f0dfc8; background:#fff9ef; border-radius:10px; padding:14px; margin-top:22px; }
+.account :focus-visible { outline:3px solid #007aff60; outline-offset:3px; }
+.mac-account-page #account-page { width:100%; max-width:1200px; padding:38px 40px 24px; margin:0 auto; }
+.mac-account-page .account,.mac-account-page .account:has(.subscription-offer) { max-width:none; width:100%; padding:0; margin:0; border:0; border-radius:0; background:none; box-shadow:none; }
+.mac-account-page .account>.brand,.mac-account-page .account>#language { display:none; }
+.mac-account-page .account #content { padding:0; margin:0; max-width:none; width:100%; }
+.mac-account-page .mac-global-search,.mac-account-page [data-action="new-quote"],.mac-account-page .mac-add-company,.mac-account-page #settings-add-company-mobile { display:none; }
+.mac-account-page .mac-toolbar-actions { margin-left:auto; }
+.mac-account-page .account #content>.row { margin:18px 0; padding:22px; background:white; border:1px solid #e1e7ef; border-radius:13px; }
+.mac-account-page .account #content>.row>strong { text-transform:capitalize; display:block; font-size:15px; color:#465d7b; }
+.mac-account-page .account #content>.row>p { color:#8092a9; font-size:12px; margin:6px 0 15px; }
+.mac-account-page .account #content>.row>button { width:auto; margin:0 8px 0 0; font-size:12px; }
+.mac-account-page .account-backup { color:#8795a8; padding:10px 0 25px; font-size:11px; }
+.mac-account-page #members { background:white; border:1px solid #e1e7ef; border-radius:13px; padding:20px 24px; margin-top:16px; }
+.mac-account-page #members>p { font-size:11px; color:#8c9aad; margin-bottom:8px; }
+.mac-account-page #members .row { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:16px 0; border-top:1px solid #edf1f6; font-size:12px; color:#58708f; overflow-wrap:anywhere; }
+.mac-account-page #members select { width:160px; margin:0 0 0 auto; font-size:12px; }
+.mac-account-page #members button { width:auto; margin:0; padding:8px 12px; background:#fff; color:#ad7777; font-size:11px; }
+.mac-account-page #add { display:flex; flex-wrap:wrap; gap:12px; margin-top:15px; }
+.mac-account-page #add input { flex:1; min-width:150px; }.mac-account-page #add select { width:160px; }.mac-account-page #add button { width:auto; }
+.mac-account-page .account-section-title { margin:35px 0 8px; }
+.mac-account-page [data-role-form] { margin:15px 0; padding:23px; border:1px solid #e0e7f1; border-radius:13px; background:white; display:grid; grid-template-columns:minmax(160px,1fr) minmax(150px,1fr); gap:12px 22px; align-items:center; }
+.mac-account-page [data-role-form] label { color:#7187a2; font-size:12px; margin:0; }
+.mac-account-page [data-role-form] button { width:fit-content; justify-self:end; font-size:12px; }
+.mac-account-page #logout { display:block; width:auto; margin:30px 0 0 auto; }
+.mac-account-page .billing-portfolio { color:#3b5678; margin:32px 0; padding:25px; border-color:#dce6f4; border-radius:16px; background:linear-gradient(135deg,#edf5ff,#f4f7fc); }
+.mac-account-page .billing-portfolio h2 { font-size:22px; }.mac-account-page .billing-portfolio p { color:#778da8; font-size:12px; }
+.mac-account-page .billing-portfolio .row { border-color:#e1e9f4!important; border-radius:11px; }
+.mac-account-page .billing-portfolio button { color:#4975ac; background:#edf5ff; border-color:#cedff4; }
+.mac-account-page .billing-portfolio table { min-width:550px; }
+.mac-account-page .subscription-offer { color:#3d5475; margin:35px 0; }
+.mac-account-page .subscription-hero { background:radial-gradient(ellipse at top right,#5b9ce6,transparent 70%),linear-gradient(145deg,#173864,#285b9c); color:white; padding:32px; border-radius:18px; }
+.mac-account-page .subscription-hero h2 { color:white; font-size:30px; margin:12px 0; }.mac-account-page .subscription-hero>p:last-child { color:#d2e3f9; }
+.mac-account-page .plan-card { border-color:#e0e6ef; border-radius:16px; padding:26px; }.mac-account-page .plan-card h3 { font-size:25px; color:#344d71; }
+.mac-account-page .plan-premium { background:linear-gradient(160deg,#f0f7ff,#fff); border-color:#6ba6ed; box-shadow:0 7px 25px #007aff09; }
+.mac-account-page .plan-description,.mac-account-page .plan-seats small,.mac-account-page .plan-price small { color:#8091a9; }.mac-account-page .plan-price { color:#315783; }
+.mac-account-page .plan-features li span { color:#4c8fdd; }.mac-account-page .plan-seats { border-color:#e2eaf5; }
+.mac-account-page .plan-domain { background:#e7f1ff; border-radius:11px; }.mac-account-page .plan-domain p,.mac-account-page .plan-upgrade,.mac-account-page .plan-domain-note { color:#6d8bb2; }
+.mac-account-page .plan-current { color:#4585c6; background:#e2f0ff; }.mac-account-page .plan-private { border-color:#dce5ef; background:#f3f6fb; }
+.mac-account-page .plan-shared,.mac-account-page .plan-self-hosted { background:#f2f6fc; border-color:#e0e7f1; border-radius:15px; }
+.mac-account-page .plan-shared>p,.mac-account-page .plan-self-hosted p,.mac-account-page .plan-fine-print { color:#7b8da7; }.mac-account-page .plan-contact { background:#427dbf; color:white; border-radius:9px; }
+.mac-account-page .plan-availability { border-color:#dce6f4; color:#748aa8; background:#f7faff; }
+@media(max-width:1200px) { .mac-account-page #account-page { padding:30px 27px; } }
+@media(max-width:760px) {
+ .mac-account-page #account-page { padding:26px 22px; }.mac-account-page [data-role-form] { grid-template-columns:1fr; }
+ .mac-account-page .plan-grid { grid-template-columns:1fr; }.mac-account-page .plan-description { min-height:0; }
+ .mac-account-page #members .row { display:block; }.mac-account-page #members select { display:block; width:100%; margin:12px 0; }
+ .mac-account-page #add { display:block; }.mac-account-page #add :is(select,button) { width:100%; }
+ .mac-account-page .plan-shared-list { grid-template-columns:1fr; }.mac-account-page .plan-self-hosted { display:block; }.mac-account-page .plan-contact { margin-top:16px; }
+}
+@media(max-width:600px) {
+ .mac-auth:not(.mac-app) .account { margin:24px 12px!important; width:calc(100% - 24px); padding:28px!important; border-radius:20px!important; }.account h1 { font-size:27px; }
+ .mac-account-page .account:has(.subscription-offer),.mac-account-page .account { margin:0!important; padding:0!important; width:100%; }
+ .mac-account-page .subscription-hero { padding:24px; }.mac-account-page .subscription-hero h2 { font-size:26px; }.mac-account-page .plan-card { padding:23px; }
+ .mac-account-page #account-page { padding:23px 16px; }.mac-account-page .billing-portfolio { padding:18px; }.mac-account-page #members { padding:18px; }
+}
