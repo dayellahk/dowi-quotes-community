@@ -19,6 +19,8 @@ Gitleaks checks the source snapshot and the new repository history. GitHub Actio
 
 ## Static-analysis triage
 
+Four file-race findings were fixed and verified by a fresh CodeQL run. Two `js/insufficient-password-hash` findings were manually reviewed as false positives for password storage: `hash` handles random session/OAuth tokens and PKCE values, not stored passwords (the reported Basic-header path crosses mutually exclusive authorization branches); `credentialKey` is a short-lived in-memory cache index protected by a random process-only HMAC key, never persisted or exposed. Actual local password records use a fresh 24-byte salt and scrypt, with timing-safe comparison. These two findings are dismissed with this reasoning rather than excluding the authentication module from analysis.
+
 CodeQL's two `js/http-to-file-access` findings in `restoreBackup` are false positives for a network attack surface: the only production caller is the operator-invoked `scripts/restore-backup.mjs` CLI; no HTTP route imports or invokes recovery. The apparent HTTP source is a test that downloads an authenticated backup and then calls the CLI library locally. Writing that explicitly selected backup is the purpose of recovery. The library validates its format, workspace checksum, UUID attachment identifiers, lengths and attachment checksums, and exclusively creates files inside a newly claimed private directory. The findings are recorded as false positives with this rationale; integrity checks are not a claim that arbitrary backups are trusted. Operators must select a trusted backup source.
 
 ## Scope and limits

@@ -41,7 +41,7 @@ Requirements: a Linux server with Docker Compose, a hostname pointing to that se
 
 ```sh
 git clone https://github.com/dayellahk/dowi-quotes-community.git
-cd dowi-quotes
+cd dowi-quotes-community
 # Use Node 22.13+ on the host, or the Docker alternative in the installation guide.
 node scripts/setup.mjs
 docker compose up -d --build

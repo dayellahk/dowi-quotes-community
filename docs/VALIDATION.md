@@ -1,12 +1,18 @@
-# Community preview validation
+# Community release validation
 
-## 0.1.2 — 2026-10-18
+## Dedicated public Community 0.1.2 — 2026-10-18
 
-- 48 Node tests passed, including authenticator vectors, replay/lockout protection, recovery codes, MFA authentication boundaries, local setup, tenant isolation, quote lifecycle and customer cost redaction. The same 48 tests passed after installing dependencies into a fresh extraction of the source ZIP. The sender-domain Message-ID regression was also verified after its final assertion was added.
-- Seven source-release tests passed: root data/history exclusion, symlink rejection, private/hosted file rejection, credential detection without disclosure, empty example secrets, current-source audit, and reproducible archives with verified per-file hashes. The audit checked 102 selected UTF-8 source files.
-- A production-mode Docker image built successfully. A fresh volume contained no contacts or quotes; anonymous workspace access was denied; a published quote omitted internal costs; hosted billing and shared review login were unavailable; recreating the container preserved a created quotation. The test container and volume were removed afterwards.
-- Ego-browser verified the extracted local setup: individual-account sign-in, fictional Studio North dashboard, Account settings, authenticator enrollment, a required second step on the next login, and successful login with a single-use recovery code. Setup keys and recovery codes were kept outside screenshots and logs.
-- No public deployment, upstream Git push or production-data migration was performed for this source package.
+The publication target is the new [dowi-quotes-community repository](https://github.com/dayellahk/dowi-quotes-community), with a fresh source-only Git history. The earlier project is not the release destination.
+
+- 54 Node tests passed, covering account and tenant isolation, existing-account takeover prevention, credential reset boundaries, MFA and recovery, quotation lifecycle, customer cost redaction, webhook destination/DNS/redirect restrictions, malformed requests, spoofed IP headers, attachment cache races and symbolic links.
+- Seven source-release tests passed, including exclusions, symlink rejection, secret-pattern detection, reproducible archives and per-file hash verification. The release allowlist selects 108 UTF-8 source files.
+- `npm audit --audit-level=low` reported zero known dependency vulnerabilities at validation time. Gitleaks 8.30.1 found no credentials in the source snapshot or the new Git history.
+- GitHub Actions passed the regression suite, release audit, packaging, production Docker build, Gitleaks and extended CodeQL analysis for JavaScript and Python. Four file-race findings were fixed. Four remaining static-analysis findings were individually reviewed as false positives with public reasoning in [the security review](SECURITY-REVIEW-0.1.2.md): two local recovery writes, a token digest and an ephemeral keyed login-cache identifier. No authentication or backup module was excluded from scanning.
+- A production-mode Docker image built successfully. A fresh volume contained no contacts or quotes; anonymous workspace access was denied; unpublished quotations were private; a published quotation omitted internal costs; hosted billing and shared review login were unavailable; container recreation preserved a created quotation. The temporary container and volume were removed afterwards.
+- Ego-browser verified individual sign-in, the fictional Studio North dashboard, Account settings, authenticator enrollment, a required second step on the next login, and successful login with a recovery code under the new Content Security Policy. Setup keys and recovery codes were kept outside screenshots and logs.
+- Repository protection includes secret scanning, push protection, dependency alerts and automated security fixes, private vulnerability reporting, and weekly Dependabot updates. The source ZIP includes a SHA-256 checksum and a per-file manifest.
+
+No production-data migration or public application deployment was performed. This release publishes source and installation instructions; operators supply their own infrastructure and credentials. Passing automated checks does not guarantee the absence of vulnerabilities.
 
 ## Initial preview
 
