@@ -2,6 +2,7 @@
 
 ## 0.1.2 — Sanitized source distribution — 2026-10-18
 
+- Hardened attachment caching and recovery against file races and symbolic links; login cache identifiers now use a random per-process HMAC key.
 - Created the dedicated `dowi-quotes-community` source project with no inherited private history.
 - Hardened existing-account invitations, production webhook destinations and DNS handling, malformed request processing, browser security policies and resistance to spoofed client-IP rate-limit bypasses. Added regression coverage, pinned security workflows, dependency auditing, CodeQL, Gitleaks and Dependabot configuration.
 - Ported optional authenticator-based two-step verification, encrypted setup secrets, single-use recovery codes and password-only Basic-auth protection from the current application.

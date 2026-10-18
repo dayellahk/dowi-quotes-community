@@ -4,7 +4,13 @@ import {restoreBackup, maximumBackupBytes} from '../lib/backup.mjs';
 const [source, destination, extra] = process.argv.slice(2);
 try {
   if (!source || !destination || extra) throw Error('Usage: node scripts/restore-backup.mjs <backup.json> <new-data-directory>');
-  if (fs.statSync(source).size > maximumBackupBytes) throw Error('Backup exceeds the 50 MB recovery limit');
-  const result = restoreBackup(fs.readFileSync(source, 'utf8'), path.resolve(destination));
+  const fd = fs.openSync(source, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
+  let input;
+  try {
+    const stat = fs.fstatSync(fd);
+    if (!stat.isFile() || stat.size > maximumBackupBytes) throw Error('Backup must be a regular file within the 50 MB recovery limit');
+    input = fs.readFileSync(fd, 'utf8');
+  } finally { fs.closeSync(fd); }
+  const result = restoreBackup(input, path.resolve(destination));
   console.log(`Restored ${result.quotes} quotes, ${result.contacts} contacts and ${result.files} files into ${path.resolve(destination)}. Email and webhook delivery remain disabled until reconfigured.`);
 } catch (error) { console.error(error.message); process.exitCode = 1; }

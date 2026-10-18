@@ -4,7 +4,6 @@ import readline from 'node:readline/promises';
 import {fileURLToPath} from 'node:url';
 const args=process.argv.slice(2);
 if(args.some(arg=>arg!=='--local'))throw Error('Usage: node scripts/setup.mjs [--local]');
-if(fs.existsSync('.env'))throw Error('.env already exists. Edit it directly; setup will not replace your secrets.');
 const local=args.includes('--local');
 const terminal=local?null:readline.createInterface({input:process.stdin,output:process.stdout});
 try {

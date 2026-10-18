@@ -11,6 +11,8 @@ import {createStore} from '../lib/store.mjs';
 import {createAuth} from '../lib/auth.mjs';
 import {createIndependentCompany} from '../lib/tenancy.mjs';
 import {publicAddress,webhookURL,postWebhook} from '../lib/webhook-network.mjs';
+import {objectStorage} from '../lib/object-storage.mjs';
+import {createBackup,restoreBackup} from '../lib/backup.mjs';
 
 test('member invitations cannot replace existing credentials or take over another tenant owner',async()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'dowi-security-invite-'));
@@ -74,4 +76,30 @@ test('malformed targets stay contained; headers and socket-based login limits ap
   for(let n=0;n<32;n++)last=await fetch(base+'/api/auth/config',{headers:{'X-Real-IP':'198.51.100.'+n,'X-Forwarded-For':'198.51.100.'+n}});
   assert.equal(last.status,429);assert.equal(child.exitCode,null);
  }finally{if(child.exitCode===null){const done=once(child,'exit');child.kill();await done}fs.rmSync(dir,{recursive:true,force:true})}
+});
+
+
+test('attachment caching and backup recovery never overwrite raced files or follow symlinks',async()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'dowi-security-files-'));
+ try{
+  const folder=path.join(root,'files');fs.mkdirSync(folder);
+  const outside=path.join(root,'outside');fs.writeFileSync(outside,'keep private');
+  const id=crypto.randomUUID(),location=path.join(folder,id),asset={id,storage:'tos',size:12};
+  const storage=objectStorage({});
+  storage.get=async()=>{fs.symlinkSync(outside,location);return Buffer.from('replacement')};
+  await storage.ensureLocal(asset,folder);
+  assert.equal(fs.readFileSync(outside,'utf8'),'keep private');
+  await assert.rejects(()=>storage.ensureLocal(asset,folder),{code:'ELOOP'});
+  assert.throws(()=>createBackup({assets:[asset]},folder),{code:'ELOOP'});
+  await assert.rejects(()=>storage.ensureLocal({...asset,id:'../outside'},folder),/Invalid attachment/);
+  fs.unlinkSync(location);
+  storage.get=async()=>{fs.writeFileSync(location,'concurrent request',{flag:'wx'});return Buffer.from('replacement')};
+  await storage.ensureLocal(asset,folder);
+  assert.equal(fs.readFileSync(location,'utf8'),'concurrent request');
+  const workspace={settings:{},quotes:[],contacts:[],items:[],templates:[],assets:[]};
+  const backup=createBackup(workspace,folder),destination=path.join(root,'restore');
+  fs.symlinkSync(folder,destination);
+  assert.throws(()=>restoreBackup(backup,destination),/must not exist/);
+  assert.equal(fs.existsSync(path.join(folder,'workspace.json')),false);
+ }finally{fs.rmSync(root,{recursive:true,force:true})}
 });
