@@ -1,5 +1,16 @@
 # Community release validation
 
+## Community 0.1.3 source hygiene — 2026-10-20
+
+- `npm run test:release` passed nine source-release tests, including fragment-based fixtures for literal AI-provider keys, named provider API-key environment variables and hosted SaaS URLs in documentation, scripts and tests.
+- `npm run check:release` accepted 108 UTF-8 source files with no configured sensitive patterns. The audit now covers every release file for literal `dowisuite.com` and `dayella.co` URLs while allowing support email addresses.
+- The reproducible archive test verifies the per-file manifest and whole-archive SHA-256 checksum. A fresh `/tmp` package was generated and its checksum and manifest were verified separately.
+- `npm ci` completed from the lockfile on Node 22.23.0, and `npm audit --audit-level=low` reported zero known dependency vulnerabilities.
+- `npm test` passed all 54 application tests in an unrestricted local shell, including HTTP server, tenancy, attachment, webhook, Turnstile and two-step verification coverage.
+- An independent source and website scan covered 122 files and found no old repository URL, AI-provider key form or named AI-provider key variable.
+
+These checks cover the source distribution boundary. They do not claim that the application has no vulnerabilities or replace a full independent security review.
+
 ## Dedicated public Community 0.1.2 — 2026-10-18
 
 The publication target is the new [dowi-quotes-community repository](https://github.com/dayellahk/dowi-quotes-community), with a fresh source-only Git history. The earlier project is not the release destination.

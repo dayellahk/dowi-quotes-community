@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — Source-archive hygiene — 2026-10-20
+
+- Extended the release audit to reject literal OpenAI/Anthropic-style `sk-` keys, xAI `xai-` keys, Google `AIza` keys, and named API-key environment variables for common AI providers.
+- Reject every literal `http(s)` URL on `dowisuite.com`, `dayella.co`, or their subdomains across all release files, not only runtime code. Support email addresses remain allowed.
+- Added fragment-based regression fixtures for literal AI keys, provider environment variables and hosted SaaS URLs so the tests do not contain prohibited values themselves.
+- Updated the Community website and release documentation for self-host-only installation. Operator-configured external service endpoints remain supported without shipping proprietary Dowi endpoints or model-provider credentials.
+
 ## 0.1.2 — Sanitized source distribution — 2026-10-18
 
 - Hardened attachment caching and recovery against file races and symbolic links; login cache identifiers now use a random per-process HMAC key.

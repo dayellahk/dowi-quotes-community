@@ -57,6 +57,10 @@ class ReleaseTests(unittest.TestCase):
         files = release.collect_files()
         values = [
             'sk_' + 'live_' + 'a' * 32,
+            'sk-' + 'proj-' + 'A1b2' * 6,
+            'sk-' + 'ant-' + 'api03-' + 'Z9y8' * 8,
+            'xai-' + 'Q7w8' * 8,
+            'AI' + 'za' + 'Sy' + 'A' * 32,
             'gh' + 'p_' + 'a' * 36,
             'AK' + 'IA' + 'A' * 16,
             '-----BEGIN ' + 'PRIVATE KEY-----',
@@ -69,13 +73,51 @@ class ReleaseTests(unittest.TestCase):
                 self.assertTrue(any('lib/injected.mjs' in error for error in errors))
                 self.assertNotIn(value, '\n'.join(errors))
 
-    def test_filled_example_secrets_and_hosted_endpoints_are_rejected(self):
+    def test_ai_provider_key_variables_are_rejected(self):
+        files = release.collect_files()
+        suffix = '_API' + '_KEY'
+        providers = (
+            'OPEN' + 'AI', 'ANTHROPIC', 'GEMINI', 'GOOGLE', 'GOOGLE_' + 'AI',
+            'GOOGLE_' + 'GENERATIVE_' + 'AI', 'X' + 'AI',
+            'DEEPSEEK', 'MISTRAL', 'GROQ', 'COHERE', 'PERPLEXITY',
+            'OPENROUTER', 'AZURE_' + 'OPENAI',
+        )
+        for name in (provider + suffix for provider in providers):
+            with self.subTest(provider=name.split('_')[0]):
+                source = f'const {name} = process.env.{name};\n'.encode()
+                errors = release.audit({**files, 'lib/provider.mjs': source})
+                self.assertTrue(any('AI provider API key variable' in error for error in errors))
+
+    def test_hosted_saas_urls_are_rejected_in_every_release_file(self):
+        files = release.collect_files()
+        urls = (
+            'http://' + 'quotes.' + 'dowisuite.com',
+            'https://' + 'api.quotes.' + 'dowisuite.com' + '/v1',
+            'https://' + 'support.' + 'dayella.co' + '/help',
+            'https://' + 'quotes.' + 'dowisuite.com' + '.',
+            'https://' + 'user:' + '{{PASSWORD_' + 'fixture' + '}}@'
+            + 'quotes.' + 'dowisuite.com' + '/path',
+        )
+        for name in ('README.md', 'CHANGELOG.md', 'docs/injected.md', 'scripts/injected.py'):
+            for url in urls:
+                with self.subTest(name=name, host=url.split('/')[2]):
+                    errors = release.audit({**files, name: url.encode()})
+                    self.assertTrue(any('hosted SaaS URL' in error for error in errors))
+                    self.assertNotIn(url, '\n'.join(errors))
+        allowed = (
+            'support' + '@' + 'dayella.co',
+            'support' + '@' + 'dowisuite.com',
+            'https://' + 'quotes.' + 'dowisuite.com' + '.' + 'evil.example',
+        )
+        for value in allowed:
+            with self.subTest(allowed=value.split('@')[-1]):
+                errors = release.audit({**files, 'docs/injected.md': value.encode()})
+                self.assertFalse(any('hosted SaaS URL' in error for error in errors))
+
+    def test_filled_example_secrets_are_rejected(self):
         files = release.collect_files()
         errors = release.audit({**files, '.env.example': b'TOKEN_ENCRYPTION_KEY=nonempty\n'})
         self.assertTrue(any('secret default' in error for error in errors))
-        endpoint = 'https://' + 'api.quotes.' + 'dowisuite.com'
-        errors = release.audit({**files, 'public/injected.js': endpoint.encode()})
-        self.assertTrue(any('hosted operator endpoint' in error for error in errors))
 
     def test_current_distribution_passes_audit(self):
         self.assertEqual(release.audit(release.collect_files()), [])
