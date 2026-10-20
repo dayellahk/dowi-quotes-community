@@ -1,6 +1,6 @@
 # Sanitized Community source / 開源脫敏版本
 
-Community 0.1.2 is the self-hosted Web application and Node backend based on DOWI quotation. It retains quotation creation, customer acceptance and discussion, internal cost redaction, contacts, items, templates, company isolation, roles, tracking, backups and optional integrations. Authenticator-based two-step verification has been brought across from the current application.
+Community 0.1.3 is the self-hosted Web application and Node backend based on DOWI quotation. It retains quotation creation, customer acceptance and discussion, internal cost redaction, contacts, items, templates, company isolation, roles, tracking, backups and optional integrations. Authenticator-based two-step verification has been brought across from the current application.
 
 The existing AGPL-3.0-only license, Dayella copyright notices, DOWI product name and public upstream source links are preserved. Those public attributions are intentional. Operators supply their own company branding and customer data after installation.
 
@@ -18,7 +18,7 @@ Production setup initializes an empty workspace. Local setup uses only fictional
 - `setup:local` binds to `127.0.0.1` and requires the generated individual account credentials. Use the production setup and HTTPS for a public deployment.
 - The Web edition requires no DOWI billing account or licensing endpoint. No operator support widget or analytics service is embedded.
 - Gmail Message-ID values use the connected sender's domain instead of a hosted operator domain.
-- SMTP, provider mail, Xero, object storage, custom domains, Turnstile and webhooks require the operator's configuration. The exchange-rate lookup contacts its reference-rate provider when requested. See [data flows](PRIVACY.md).
+- SMTP, provider mail, Xero, object storage, custom domains, Turnstile and webhooks require the operator's configuration. External service endpoints supplied by the operator remain supported; the Community archive ships neither proprietary Dowi service endpoints nor model-provider credentials. The exchange-rate lookup contacts its reference-rate provider when requested. See [data flows](PRIVACY.md).
 - Two-step authentication encrypts authenticator secrets with the installation key and hashes recovery codes. Enabling it revokes other sessions and prevents password-only HTTP Basic access for that user.
 - Security hardening for the dedicated repository is described in [the 0.1.2 review](SECURITY-REVIEW-0.1.2.md), including existing-account protection and production webhook network restrictions.
 
@@ -36,7 +36,7 @@ npm run package:release
 
 The ZIP in `dist/` has a single versioned root directory, normalized file modes and fixed archive timestamps. Its adjacent `.zip.sha256` verifies the whole ZIP. `RELEASE-MANIFEST.json` lists every included source file and its SHA-256; the manifest does not hash itself. Identical source and the same Python/zlib toolchain produce identical ZIP bytes.
 
-The audit rejects symbolic links, private/generated paths inside source directories, unexpected binary files, hosted billing modules, configured example secrets, known provider-token/private-key formats, credentials in URLs, workstation paths, and hosted operator endpoints in runtime code. Findings print paths and rule names without echoing matched credentials. Tests inject forbidden files and tokens, attempt a symlink escape, and verify archive reproducibility and every manifest digest. CI runs the audit, packaging and workflow tests before its Docker build.
+The audit rejects symbolic links, private/generated paths inside source directories, unexpected binary files, hosted billing modules, configured example secrets, known provider-token/private-key formats, credentials in URLs, workstation paths, and every literal `http(s)` URL on `dowisuite.com`, `dayella.co`, or their subdomains. It also rejects common literal AI-provider keys and named AI-provider API-key environment variables, including OpenAI, Anthropic, Gemini/Google, xAI, DeepSeek, Mistral, Groq, Cohere, Perplexity, OpenRouter and Azure OpenAI. Support email addresses remain allowed. Findings print paths and rule names without echoing matched credentials. Tests inject forbidden files, keys, variables and URLs, attempt a symlink escape, and verify archive reproducibility and every manifest digest. CI runs the audit, packaging and workflow tests before its Docker build.
 
 This is a source-distribution check, not an anonymizer for a running database or a complete security audit. Pattern checks cannot identify every possible secret or personal name. Review changes to source fixtures and documentation before publishing a new release. Do not publish the parent application directory or its old Git history as the sanitized release.
 

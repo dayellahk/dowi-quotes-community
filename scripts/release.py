@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import stat
 import sys
+from urllib.parse import urlsplit
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,13 +35,41 @@ PATTERNS = {
     'provider credential': re.compile(
         r'\b(?:sk_(?:live|test)_[A-Za-z0-9]{16,}|gh[pousr]_[A-Za-z0-9]{30,}'
         r'|github_pat_[A-Za-z0-9_]{30,}|(?:AKIA|ASIA)[A-Z0-9]{16}'
-        r'|AIza[A-Za-z0-9_-]{30,}|xox[baprs]-[A-Za-z0-9-]{20,})\b'),
+        r'|xox[baprs]-[A-Za-z0-9-]{20,})\b'),
+    'AI provider credential': re.compile(
+        r'\b(?:sk-(?:ant-)?[A-Za-z0-9_-]{20,}|xai-[A-Za-z0-9_-]{20,}'
+        r'|AIza[A-Za-z0-9_-]{30,})\b'),
+    'AI provider API key variable': re.compile(
+        r'\b(?:OPENAI|ANTHROPIC|GEMINI|GOOGLE(?:_(?:GENAI|AI|GENERATIVE_AI))?'
+        r'|XAI|DEEPSEEK|MISTRAL'
+        r'|GROQ|COHERE|PERPLEXITY|OPENROUTER|AZURE_OPENAI)_(?:API_)?KEY\b',
+        re.IGNORECASE),
     'literal bearer token': re.compile(r'\beyJ[A-Za-z0-9_-]{12,}\.eyJ[A-Za-z0-9_-]{12,}\.[A-Za-z0-9_-]{16,}\b'),
     'credential in URL': re.compile(r'https?://[^\s/:@\x27"`<>{},]+:[^\s/@\x27"`<>{},]+@'),
     'private workstation path': re.compile(r'/(?:Users|home)/[A-Za-z0-9_][^\s\x27"`]*|/(?:Volumes)/[^\s\x27"`]+'),
 }
-OPERATOR_HOST = re.compile(r'https?://(?:[\w-]+\.)*(?:dowisuite\.com|dayella\.co)(?:[/:\s\x27"`]|$)|@dowisuite\.com')
+URL_TOKEN = re.compile(r'https?://[^\s<>\x27"`]+', re.IGNORECASE)
+URL_TRAILING_PUNCTUATION = '.,;:!?)]}'
+HOSTED_DOMAINS = ('dowisuite.com', 'dayella.co')
 SECRET_ASSIGNMENT = re.compile(r'^([A-Z][A-Z0-9_]*(?:PASSWORD|SECRET|TOKEN|API_KEY|ACCESS_KEY|PRIVATE_KEY|ENCRYPTION_KEY)[A-Z0-9_]*)\s*=\s*(.+)$')
+
+
+def hosted_url_matches(source):
+    """Yield URL matches whose parsed hostname belongs to a hosted domain."""
+    for match in URL_TOKEN.finditer(source):
+        token = match.group(0)
+        while token:
+            try:
+                hostname = (urlsplit(token).hostname or '').lower().rstrip('.')
+            except ValueError:
+                hostname = ''
+            if any(hostname == domain or hostname.endswith('.' + domain) for domain in HOSTED_DOMAINS):
+                yield match
+                break
+            trimmed = token.rstrip(URL_TRAILING_PUNCTUATION)
+            if trimmed == token:
+                break
+            token = trimmed
 
 
 def collect_files(root=ROOT):
@@ -87,9 +116,9 @@ def audit(files):
             for match in pattern.finditer(source):
                 line = source.count('\n', 0, match.start()) + 1
                 errors.append(f'{name}:{line}: {label}')
-        if name == 'server.mjs' or name.startswith(('lib/', 'public/')):
-            if OPERATOR_HOST.search(source):
-                errors.append(f'{name}: hosted operator endpoint in runtime source')
+        for match in hosted_url_matches(source):
+            line = source.count('\n', 0, match.start()) + 1
+            errors.append(f'{name}:{line}: hosted SaaS URL')
         if name == '.env.example':
             for number, line in enumerate(source.splitlines(), 1):
                 if SECRET_ASSIGNMENT.match(line):
